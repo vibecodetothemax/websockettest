@@ -1,10 +1,15 @@
+const http = require("http")
 const WebSocket = require("ws")
 
+const server = http.createServer()
+
 const s = new WebSocket.Server({
-    port: process.env.PORT || 8080
+    server
 })
 
-console.log("we up")
+server.listen(process.env.PORT || 8080, () => {
+    console.log("we up")
+})
 
 s.on("connection", (c, r) => {
     console.log("bro joined", r.socket.remoteAddress)
@@ -32,7 +37,7 @@ s.on("connection", (c, r) => {
             return
         }
 
-        console.log("got", j.type, "#"..j.id)
+        console.log(`got ${j.type} #${j.id}`)
 
         if (j.type === "ping") {
             c.send(JSON.stringify({
